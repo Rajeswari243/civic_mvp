@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CivicConnect - Smart Civic Issue Management</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Civic<span>Connect</span>
+    </div>
+
+    <div id="navUser"></div>
+
+</nav>
+
+
+<!-- ================= LOGIN PAGE ================= -->
+
+<section id="loginPage" class="page">
+
+    <div class="login-card">
+
+        <div class="logo large">
+            Civic<span>Connect</span>
+        </div>
+
+        <h2>Smart Civic Issue Management</h2>
+
+        <p class="subtitle">
+            Report, track and resolve civic problems efficiently.
+        </p>
+
+        <div class="role-buttons">
+
+            <button onclick="showLogin('citizen')" class="role-btn">
+                👤 Citizen
+            </button>
+
+            <button onclick="showLogin('authority')" class="role-btn authority">
+                🏛️ Authority
+            </button>
+
+        </div>
+
+        <div id="loginForm" class="hidden">
+
+            <h3 id="loginTitle"></h3>
+
+            <input
+                type="text"
+                id="loginUsername"
+                placeholder="Username"
+            >
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+            >
+
+            <button onclick="login()" class="primary-btn">
+                Login
+            </button>
+
+            <p id="loginMessage" class="message"></p>
+
+            <p class="demo-info">
+                Demo Citizen: citizen / 1234<br>
+                Demo Authority: admin / admin123
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CITIZEN DASHBOARD ================= -->
+
+<section id="citizenDashboard" class="page hidden">
+
+    <div class="container">
+
+        <div class="dashboard-header">
+
+            <div>
+                <h1>Citizen Dashboard</h1>
+                <p>Report and track civic issues in your area.</p>
+            </div>
+
+            <button onclick="logout()" class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <h3 id="citizenTotal">0</h3>
+                <p>Total Reports</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="citizenProgress">0</h3>
+                <p>In Progress</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="citizenResolved">0</h3>
+                <p>Resolved</p>
+            </div>
+
+        </div>
+
+
+        <!-- REPORT ISSUE -->
+
+        <div class="card">
+
+            <h2>Report a Civic Issue</h2>
+
+            <form id="issueForm">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Issue Title</label>
+
+                        <input
+                            type="text"
+                            id="issueTitle"
+                            placeholder="Example: Broken street light"
+                            required
+                        >
+                    </div>
+
+
+                    <div>
+
+                        <label>Category</label>
+
+                        <select id="issueCategory" required>
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Roads">
+                                Roads
+                            </option>
+
+                            <option value="Street Lights">
+                                Street Lights
+                            </option>
+
+                            <option value="Water">
+                                Water
+                            </option>
+
+                            <option value="Garbage">
+                                Garbage
+                            </option>
+
+                            <option value="Drainage">
+                                Drainage
+                            </option>
+
+                            <option value="Electricity">
+                                Electricity
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div>
+
+                        <label>Area / Ward</label>
+
+                        <select id="issueArea" required>
+
+                            <option value="">
+                                Select area
+                            </option>
+
+                            <option value="Ward 1">
+                                Ward 1
+                            </option>
+
+                            <option value="Ward 2">
+                                Ward 2
+                            </option>
+
+                            <option value="Ward 3">
+                                Ward 3
+                            </option>
+
+                            <option value="Ward 4">
+                                Ward 4
+                            </option>
+
+                            <option value="Ward 5">
+                                Ward 5
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div>
+
+                        <label>Location</label>
+
+                        <input
+                            type="text"
+                            id="issueLocation"
+                            placeholder="Street / landmark"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <label>Description</label>
+
+                <textarea
+                    id="issueDescription"
+                    placeholder="Describe the problem..."
+                    required
+                ></textarea>
+
+
+                <label>Priority</label>
+
+                <select id="issuePriority">
+
+                    <option value="Low">
+                        Low
+                    </option>
+
+                    <option value="Medium" selected>
+                        Medium
+                    </option>
+
+                    <option value="High">
+                        High
+                    </option>
+
+                    <option value="Critical">
+                        Critical
+                    </option>
+
+                </select>
+
+
+                <button type="submit" class="primary-btn">
+                    Submit Issue
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- MY ISSUES -->
+
+        <div class="card">
+
+            <div class="section-header">
+
+                <h2>My Reported Issues</h2>
+
+                <button onclick="renderCitizenIssues()">
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="citizenIssues"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= AUTHORITY DASHBOARD ================= -->
+
+<section id="authorityDashboard" class="page hidden">
+
+    <div class="container">
+
+        <div class="dashboard-header">
+
+            <div>
+                <h1>Authority Dashboard</h1>
+                <p>
+                    Verify, assign and manage civic complaints.
+                </p>
+            </div>
+
+            <button onclick="logout()" class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- AUTHORITY STATS -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <h3 id="authorityTotal">0</h3>
+                <p>Total Issues</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="authorityPending">0</h3>
+                <p>Pending Verification</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="authorityProgress">0</h3>
+                <p>In Progress</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="authorityResolved">0</h3>
+                <p>Resolved</p>
+            </div>
+
+        </div>
+
+
+        <!-- FILTER -->
+
+        <div class="card">
+
+            <div class="section-header">
+
+                <h2>Issue Management</h2>
+
+                <select
+                    id="statusFilter"
+                    onchange="renderAuthorityIssues()"
+                >
+
+                    <option value="All">
+                        All Issues
+                    </option>
+
+                    <option value="Reported">
+                        Reported
+                    </option>
+
+                    <option value="Under Verification">
+                        Under Verification
+                    </option>
+
+                    <option value="Assigned">
+                        Assigned
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Resolved">
+                        Resolved
+                    </option>
+
+                    <option value="Reopen Requested">
+                        Reopen Requested
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="authorityIssues"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ISSUE DETAILS MODAL ================= -->
+
+<div id="issueModal" class="modal hidden">
+
+    <div class="modal-content">
+
+        <button
+            class="close-btn"
+            onclick="closeModal()"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
